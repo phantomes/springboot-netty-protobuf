@@ -21,7 +21,7 @@ public class LogicClientHandler extends SimpleChannelInboundHandler<MessageBase>
 		authMsg.setClientId(CLIENTID);
 		authMsg.setCmd(CommandType.AUTH);
 		authMsg.setData("This is auth data");
-
+		log.info("客户端启动，发送验证消息");
 		ctx.writeAndFlush(authMsg.build());
 	}
 
@@ -33,7 +33,7 @@ public class LogicClientHandler extends SimpleChannelInboundHandler<MessageBase>
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, MessageBase msg) throws Exception {
 		if(msg.getCmd().equals(CommandType.AUTH_BACK)){
-			log.debug("验证成功");
+			log.info("验证成功,得到服务端返回："+msg.getData());
 			ctx.writeAndFlush(
 					MessageBase.newBuilder()
 					.setClientId(CLIENTID)
@@ -41,6 +41,7 @@ public class LogicClientHandler extends SimpleChannelInboundHandler<MessageBase>
 					.setData("This is upload data")
 					.build()
 					);
+			log.info("客户端发送消息：This is upload data");
 
 		}else if(msg.getCmd().equals(CommandType.PING)){
 			//接收到server发送的ping指令
@@ -52,14 +53,14 @@ public class LogicClientHandler extends SimpleChannelInboundHandler<MessageBase>
 			
 		}else if(msg.getCmd().equals(CommandType.PUSH_DATA)){
 			//接收到server推送数据
-			log.info(msg.getData());
+			log.info("接收推送"+msg.getData());
 			
 		}else if(msg.getCmd().equals(CommandType.PUSH_DATA_BACK)){
 			//接收到server返回数据
-			log.info(msg.getData());
+			log.info("接收推送返回："+msg.getData());
 			
 		}else{
-			log.info(msg.getData());
+			log.info("接收服务消息："+msg.getData());
 		}
 	}
 }

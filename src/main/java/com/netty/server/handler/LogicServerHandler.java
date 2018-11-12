@@ -40,8 +40,7 @@ public class LogicServerHandler extends ChannelInboundHandlerAdapter{
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		Message.MessageBase msgBase = (Message.MessageBase)msg;
 
-		log.info(msgBase.getData());
-
+		log.info("收到上游服务端消息："+msgBase.getData());
 		ChannelFuture cf = ctx.writeAndFlush(
 				MessageBase.newBuilder()
 				.setClientId(msgBase.getClientId())
@@ -49,6 +48,7 @@ public class LogicServerHandler extends ChannelInboundHandlerAdapter{
 				.setData("This is upload data back msg")
 				.build()
 				);
+		log.info("服务端发送上传消息：This is upload data back msg");
 		/* 上一条消息发送成功后，立马推送一条消息 */
 		cf.addListener(new GenericFutureListener<Future<? super Void>>() {
 			@Override
@@ -61,6 +61,8 @@ public class LogicServerHandler extends ChannelInboundHandlerAdapter{
 							.setData("This is a push msg")
 							.build()
 							);
+					log.info("服务端发送推送消息：This is a push msg");
+
 				}
 			}
 		});

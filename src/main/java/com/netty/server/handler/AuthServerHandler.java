@@ -50,12 +50,13 @@ public class AuthServerHandler extends ChannelInboundHandlerAdapter {
 		}
 		/*认证处理*/
 		if(msgBase.getCmd().equals(CommandType.AUTH)){
-			log.info("我是验证处理逻辑");
+			log.info("收到客户端验证消息："+msgBase.getData());
 			Attribute<String> attr = ctx.attr(clientInfo);
 			attr.set(clientId);
 			channelRepository.put(clientId, ctx.channel());
 			
 			ctx.writeAndFlush(createData(clientId, CommandType.AUTH_BACK, "This is response data").build());
+			log.info("验证成功，返回消息给客户端");
 		
 		}else if(msgBase.getCmd().equals(CommandType.PING)){
 			//处理ping消息

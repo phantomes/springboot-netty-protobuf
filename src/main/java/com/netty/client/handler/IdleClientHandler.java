@@ -42,7 +42,7 @@ public class IdleClientHandler extends SimpleChannelInboundHandler<Message> {
 			} else if (event.state() == IdleState.ALL_IDLE) {
 				type = "all idle";
 			}
-			log.debug(ctx.channel().remoteAddress() + "超时类型：" + type);
+			log.info(ctx.channel().remoteAddress() + "超时类型：" + type);
 			sendPingMsg(ctx);
 		} else {
 			super.userEventTriggered(ctx, evt);
@@ -62,7 +62,7 @@ public class IdleClientHandler extends SimpleChannelInboundHandler<Message> {
 				.build()
 				);
 		heartbeatCount++;
-		log.info("Client sent ping msg to " + context.channel().remoteAddress() + ", count: " + heartbeatCount);
+//		log.info("Client sent ping msg to " + context.channel().remoteAddress() + ", count: " + heartbeatCount);
 	}
 
 	/**
@@ -77,6 +77,6 @@ public class IdleClientHandler extends SimpleChannelInboundHandler<Message> {
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
-
+		log.info("idle: "+msg);
 	}
 }

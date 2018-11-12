@@ -2,6 +2,7 @@ package com.netty.client;
 
 import java.util.concurrent.TimeUnit;
 
+import com.google.protobuf.MessageLite;
 import org.apache.log4j.Logger;
 
 import com.netty.client.handler.IdleClientHandler;
@@ -56,6 +57,7 @@ public class NettyClient {
 	 * netty client 连接，连接失败10秒后重试连接
 	 */
 	public Bootstrap doConnect(Bootstrap bootstrap, EventLoopGroup eventLoopGroup) {
+
 		try {
 			if (bootstrap != null) {
 				bootstrap.group(eventLoopGroup);
